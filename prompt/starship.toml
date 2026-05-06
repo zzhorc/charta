@@ -1,0 +1,139 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+$directory\
+$git_branch\
+$git_status\
+$c\
+$rust\
+$golang\
+$nodejs\
+$php\
+$java\
+$kotlin\
+$haskell\
+$python\
+$conda\
+$time\
+${custom.disk_free}\
+${custom.ram}\
+${custom.cpu}\
+$cmd_duration\
+$line_break\
+$character"""
+
+[directory]
+style = "bold purple"
+format = "[$path]($style)"
+truncation_length = 6
+truncation_symbol = ".../"
+truncate_to_repo = false
+
+[git_branch]
+symbol = ""
+style = "bold blue"
+format = '[ › ](bright-black)[git:$branch]($style)'
+
+[git_status]
+style = "bold red"
+format = '[( $all_status$ahead_behind)]($style)'
+
+[nodejs]
+symbol = ""
+style = "bold green"
+format = '[ › ](bright-black)[node:$version]($style)'
+
+[c]
+symbol = ""
+style = "bold yellow"
+format = '[ › ](bright-black)[c:$version]($style)'
+
+[rust]
+symbol = ""
+style = "bold yellow"
+format = '[ › ](bright-black)[rust:$version]($style)'
+
+[golang]
+symbol = ""
+style = "bold cyan"
+format = '[ › ](bright-black)[go:$version]($style)'
+
+[php]
+symbol = ""
+style = "bold blue"
+format = '[ › ](bright-black)[php:$version]($style)'
+
+[java]
+symbol = ""
+style = "bold yellow"
+format = '[ › ](bright-black)[java:$version]($style)'
+
+[kotlin]
+symbol = ""
+style = "bold purple"
+format = '[ › ](bright-black)[kotlin:$version]($style)'
+
+[haskell]
+symbol = ""
+style = "bold cyan"
+format = '[ › ](bright-black)[haskell:$version]($style)'
+
+[python]
+symbol = ""
+style = "bold green"
+format = '[ › ](bright-black)[python:$version(\(#$virtualenv\))]($style)'
+
+[docker_context]
+symbol = ""
+style = "bold blue"
+format = '[ › ](bright-black)[docker:$context]($style)'
+
+[conda]
+symbol = ""
+style = "bold green"
+format = '[ › ](bright-black)[conda:$environment]($style)'
+ignore_base = false
+
+[time]
+disabled = false
+time_format = "%a %m-%d %R"
+style = "cyan"
+format = '[ › ](cyan)[$time]($style)'
+
+[custom.disk_free]
+command = "df -h / | awk 'NR==2 {print \"disk:\"$4}'"
+when = "true"
+style = "bright-black"
+format = '[ › ](bright-black)[$output]($style)'
+
+[custom.ram]
+command = "case \"$(uname)\" in Darwin) memory_pressure | awk '/System-wide memory free percentage:/ {gsub(\"%\", \"\", $5); print \"ram:\" 100-$5 \"%\"}' ;; Linux) awk '/MemTotal/ {total=$2} /MemAvailable/ {avail=$2} END {if (total > 0) printf \"ram:%.0f%%\", (total-avail)/total*100}' /proc/meminfo ;; *) echo \"ram:n/a\" ;; esac"
+when = "true"
+style = "bright-black"
+format = ' [ $output]($style)'
+
+[custom.cpu]
+command = "case \"$(uname)\" in Darwin) cores=$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 1); ps -A -o %cpu= 2>/dev/null | awk -v cores=\"$cores\" 'BEGIN {if (cores < 1) cores = 1} {s+=$1; seen=1} END {if (!seen) {print \"cpu:n/a\"; exit}; cpu=s/cores; if (cpu > 100) cpu=100; printf \"cpu:%.0f%%\", cpu}' ;; Linux) top -bn1 2>/dev/null | awk '/Cpu/ {idle=$8; gsub(\",\", \"\", idle); printf \"cpu:%.0f%%\", 100-idle; seen=1} END {if (!seen) print \"cpu:n/a\"}' ;; *) echo \"cpu:n/a\" ;; esac"
+when = "true"
+style = "bright-black"
+format = ' [ $output]($style)'
+
+[line_break]
+disabled = false
+
+[character]
+disabled = false
+success_symbol = '[❯](bold green)'
+error_symbol = '[❯](bold red)'
+vimcmd_symbol = '[❮](bold yellow)'
+vimcmd_replace_one_symbol = '[❮](bold yellow)'
+vimcmd_replace_symbol = '[❮](bold yellow)'
+vimcmd_visual_symbol = '[❮](bold yellow)'
+
+[cmd_duration]
+show_milliseconds = true
+format = "[ › ](bright-black)[in $duration](bright-black)"
+style = "bright-black"
+disabled = false
+show_notifications = true
+min_time_to_notify = 45000

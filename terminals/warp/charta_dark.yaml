@@ -1,0 +1,24 @@
+# Charta Dark for Warp
+accent: '#E08999'
+background: '#1E1E2E'
+foreground: '#CDD6F4'
+details: lighter
+terminal_colors:
+  normal:
+    black: '#45475A'
+    red: '#F38BA8'
+    green: '#A6E3A1'
+    yellow: '#F9E2AF'
+    blue: '#89B4FA'
+    magenta: '#D27A8A'
+    cyan: '#94E2D5'
+    white: '#BAC2DE'
+  bright:
+    black: '#6C7086'
+    red: '#F38BA8'
+    green: '#A6E3A1'
+    yellow: '#F9E2AF'
+    blue: '#89B4FA'
+    magenta: '#E08999'
+    cyan: '#94E2D5'
+    white: '#A6ADC8'

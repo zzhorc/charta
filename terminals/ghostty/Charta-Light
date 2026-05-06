@@ -1,0 +1,22 @@
+# Charta Light for Ghostty
+background = #D5D0B5
+foreground = #3C3836
+cursor-color = #7C6F64
+selection-background = #BDB596
+
+palette = 0=#4C4F69
+palette = 1=#D20F39
+palette = 2=#40A02B
+palette = 3=#DF8E1D
+palette = 4=#1E66F5
+palette = 5=#D27A8A
+palette = 6=#179299
+palette = 7=#ACB0BE
+palette = 8=#7C7F93
+palette = 9=#D20F39
+palette = 10=#40A02B
+palette = 11=#DF8E1D
+palette = 12=#1E66F5
+palette = 13=#E08999
+palette = 14=#179299
+palette = 15=#E6E9EF

@@ -1,0 +1,32 @@
+# Charta Light for Alacritty
+[colors.primary]
+background = "#D5D0B5"
+foreground = "#3C3836"
+
+[colors.cursor]
+text = "#D5D0B5"
+cursor = "#7C6F64"
+
+[colors.selection]
+text = "#3C3836"
+background = "#BDB596"
+
+[colors.normal]
+black   = "#4C4F69"
+red     = "#D20F39"
+green   = "#40A02B"
+yellow  = "#DF8E1D"
+blue    = "#1E66F5"
+magenta = "#D27A8A"
+cyan    = "#179299"
+white   = "#ACB0BE"
+
+[colors.bright]
+black   = "#7C7F93"
+red     = "#D20F39"
+green   = "#40A02B"
+yellow  = "#DF8E1D"
+blue    = "#1E66F5"
+magenta = "#E08999"
+cyan    = "#179299"
+white   = "#E6E9EF"
