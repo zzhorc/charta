@@ -18,6 +18,12 @@
   白天呈现温润的复古莎草纸光泽，夜晚坠入深邃的暗影；一抹标志性的西柚粉贯穿始终。
 </p>
 
+## Preview
+
+| Light | Dark |
+| --- | --- |
+| ![Charta Light preview](img/light.png) | ![Charta Dark preview](img/dark.png) |
+
 | Paper | Ink | Night | Rose |
 | --- | --- | --- | --- |
 | `#D5D0B5` | `#3C3836` | `#1E1E2E` | `#E08999` |
