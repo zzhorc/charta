@@ -83,7 +83,7 @@ config.max_fps = 240
 config.use_fancy_tab_bar = false
 -- 标签页在底部
 config.tab_bar_at_bottom = true
--- config.window_decorations = ""
+config.window_decorations = 'INTEGRATED_BUTTONS|RESIZE'
 
 config.line_height = 1.20
 config.enable_scroll_bar = true
@@ -162,9 +162,14 @@ if dark_scheme then
   }
 end
 
-if config.color_scheme == 'Kaku Light' and config.window_frame then
+if config.color_scheme == 'Kaku Light' then
+  config.window_background_opacity = 1.0
+  config.macos_window_background_blur = 0
+  config.window_frame = config.window_frame or {}
   config.window_frame.active_titlebar_bg = light_bg
   config.window_frame.inactive_titlebar_bg = light_bg
+  config.window_frame.button_bg = light_bg
+  config.window_frame.button_hover_bg = light_bg
 end
 
 config.mouse_bindings = config.mouse_bindings or {}
