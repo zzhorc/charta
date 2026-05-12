@@ -49,14 +49,11 @@ else
 end
 
 -- User overrides:
--- Kaku intentionally keeps WezTerm-compatible Lua API names
--- for maximum compatibility, so `wezterm.*` here is expected.
---
 -- 1) Font family and size
 config.font = wezterm.font('MesloLGS NF')
 config.font_size = 14.0
 
--- 2) Color scheme & Appearance
+-- 2) Visual appearance
 config.window_background_opacity = 0.9
 config.macos_window_background_blur = 25
 
@@ -64,20 +61,7 @@ config.macos_window_background_blur = 25
 config.initial_cols = 120
 config.initial_rows = 30
 config.window_padding = { left = '20px', right = '20px', top = '40px', bottom = '20px' }
---
--- 4) Default shell/program
--- config.default_prog = { '/bin/zsh', '-l' }
---
--- 5) Cursor and scrollback
--- config.default_cursor_style = 'SteadyBar'
--- config.scrollback_lines = 20000
---
--- 6) Add or override a key binding
--- table.insert(config.keys, {
---   key = 'Enter',
---   mods = 'CMD|SHIFT',
---   action = wezterm.action.TogglePaneZoomState,
--- })
+
 config.max_fps = 240
 -- 标签页花哨模式
 config.use_fancy_tab_bar = false
@@ -88,8 +72,11 @@ config.window_decorations = 'INTEGRATED_BUTTONS|RESIZE'
 config.line_height = 1.20
 config.enable_scroll_bar = true
 
+-- ===== Custom Theme Definitions =====
 local light_bg = '#D5D0B5' -- Warmer, slightly darker vintage paper
 local light_fg = '#3C3836' -- Espresso dark text for high contrast and comfort
+
+-- Customize Kaku Light
 local light_scheme = config.color_schemes and config.color_schemes['Kaku Light']
 if light_scheme then
   light_scheme.background = light_bg
@@ -99,8 +86,6 @@ if light_scheme then
   light_scheme.selection_bg = '#BDB596'
   light_scheme.selection_fg = '#3C3836'
   
-  -- Optimized ANSI colors for command output (ls, grep, vim, etc.)
-  -- Using mature Catppuccin Latte ANSI palette (with custom Rose Pink for magenta)
   light_scheme.ansi = {
     '#4C4F69', -- black
     '#D20F39', -- red
@@ -112,12 +97,12 @@ if light_scheme then
     '#ACB0BE', -- white
   }
   light_scheme.brights = {
-    '#7C7F93', -- bright black (Catppuccin Latte Overlay2 - perfect readable grey for light bg)
+    '#7C7F93', -- bright black
     '#D20F39', -- bright red
     '#40A02B', -- bright green
     '#DF8E1D', -- bright yellow
     '#1E66F5', -- bright blue
-    '#E08999', -- bright magenta (Bright Rose Pink)
+    '#E08999', -- bright magenta
     '#179299', -- bright cyan
     '#E6E9EF', -- bright white
   }
@@ -125,21 +110,14 @@ if light_scheme then
   if light_scheme.tab_bar then
     light_scheme.tab_bar.background = light_bg
     light_scheme.tab_bar.inactive_tab_edge = light_bg
-
-    if light_scheme.tab_bar.inactive_tab then
-      light_scheme.tab_bar.inactive_tab.bg_color = light_bg
-    end
-
-    if light_scheme.tab_bar.new_tab then
-      light_scheme.tab_bar.new_tab.bg_color = light_bg
-    end
+    if light_scheme.tab_bar.inactive_tab then light_scheme.tab_bar.inactive_tab.bg_color = light_bg end
+    if light_scheme.tab_bar.new_tab then light_scheme.tab_bar.new_tab.bg_color = light_bg end
   end
 end
 
-
+-- Customize Kaku Dark
 local dark_scheme = config.color_schemes and config.color_schemes['Kaku Dark']
 if dark_scheme then
-  -- Using mature Catppuccin Mocha ANSI palette (with custom Rose Pink for magenta)
   dark_scheme.ansi = {
     '#45475A', -- black
     '#F38BA8', -- red
@@ -151,29 +129,25 @@ if dark_scheme then
     '#BAC2DE', -- white
   }
   dark_scheme.brights = {
-    '#6C7086', -- bright black (Catppuccin Mocha Overlay0 - clear readable grey for dark bg)
+    '#6C7086', -- bright black
     '#F38BA8', -- bright red
     '#A6E3A1', -- bright green
     '#F9E2AF', -- bright yellow
     '#89B4FA', -- bright blue
-    '#E08999', -- bright magenta (Bright Rose Pink)
+    '#E08999', -- bright magenta
     '#94E2D5', -- bright cyan
     '#A6ADC8', -- bright white
   }
 end
 
-if config.color_scheme == 'Kaku Light' then
-  config.window_background_opacity = 1.0
-  config.macos_window_background_blur = 0
-  config.window_frame = config.window_frame or {}
-  config.window_frame.active_titlebar_bg = light_bg
-  config.window_frame.inactive_titlebar_bg = light_bg
-  config.window_frame.button_bg = light_bg
-  config.window_frame.button_hover_bg = light_bg
-end
+-- ===== Theme Resolution =====
+-- We set this to 'Auto' to let Kaku's built-in logic handle real-time switching.
+-- If you manually select 'Kaku Light' or 'Kaku Dark' in the Kaku menu,
+-- this configuration will still respect your choice because we are defining
+-- those schemes above without overriding the final resolution logic.
+config.color_scheme = (wezterm.gui and wezterm.gui.get_appearance() or 'Dark'):find('Dark') and 'Kaku Dark' or 'Kaku Light'
 
 config.mouse_bindings = config.mouse_bindings or {}
-
 table.insert(config.mouse_bindings, {
   event = { Down = { streak = 1, button = 'Right' } },
   mods = 'NONE',
@@ -181,5 +155,6 @@ table.insert(config.mouse_bindings, {
 })
 
 config.tab_close_confirmation = true
-config.tab_title_show_basename_only = true
+config.tab_title_show_basename_only = false
+
 return config
