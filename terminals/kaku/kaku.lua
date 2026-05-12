@@ -90,41 +90,29 @@ if dark_scheme then
   dark_scheme.brights = {'#6C7086','#F38BA8','#A6E3A1','#F9E2AF','#89B4FA','#E08999','#94E2D5','#A6ADC8'}
 end
 
--- ===== Robust Theme Resolution Logic =====
-local function is_dark_mode()
-  -- 1. Try WezTerm GUI API
-  if wezterm.gui then
-    local appearance = wezterm.gui.get_appearance()
-    if appearance:find('Dark') then return true end
-    if appearance:find('Light') then return false end
-  end
-  
-  -- 2. Fallback to macOS system defaults (most reliable)
-  local handle = io.popen('defaults read -g AppleInterfaceStyle 2>/dev/null')
-  if handle then
-    local result = handle:read('*a') or ''
-    handle:close()
-    return result:find('Dark') ~= nil
-  end
-  
-  return false -- Final fallback
-end
+-- ===== Auto Theme Logic =====
+-- Set to 'Auto' and let Kaku's internal resolution handle it.
+-- This ensures WezTerm's reactive system knows it's an auto-theme.
+config.color_scheme = 'Auto'
 
--- Only auto-switch if the scheme is set to 'Auto' or hasn't been explicitly locked to a theme
--- (This allows manual overrides from the Kaku menu to persist until the next restart/reload)
-if config.color_scheme == 'Auto' or not config.color_scheme or config.color_scheme == '' then
-  config.color_scheme = is_dark_mode() and 'Kaku Dark' or 'Kaku Light'
-end
+-- Override Kaku's default titlebar colors whenever the theme reloads
+wezterm.on('window-config-reloaded', function(window, pane)
+  local overrides = window:get_config_overrides() or {}
+  local appearance = window:get_appearance()
+  local scheme = (overrides.color_scheme or config.color_scheme or ''):find('Dark') and 'Kaku Dark' or 
+                 (overrides.color_scheme or config.color_scheme or ''):find('Light') and 'Kaku Light' or 
+                 (appearance:find('Dark') and 'Kaku Dark' or 'Kaku Light')
 
--- Apply Light-mode Titlebar fixes
-if config.color_scheme == 'Kaku Light' then
-  config.window_frame = {
-    active_titlebar_bg = light_bg,
-    inactive_titlebar_bg = light_bg,
-    button_bg = light_bg,
-    button_hover_bg = light_bg,
-  }
-end
+  if scheme == 'Kaku Light' then
+    overrides.window_frame = {
+      active_titlebar_bg = light_bg,
+      inactive_titlebar_bg = light_bg,
+      button_bg = light_bg,
+      button_hover_bg = light_bg,
+    }
+    window:set_config_overrides(overrides)
+  end
+end)
 
 config.mouse_bindings = config.mouse_bindings or {}
 table.insert(config.mouse_bindings, {
